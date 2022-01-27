@@ -1,0 +1,10 @@
+{
+    "Draft Deployment": {
+        "note": "This is a draft deployment JSON file to test if it works as intended",
+        "files": [
+            "./encoding-deployment.yaml",
+            "./framing-deployment.yaml",
+            "./inference-deployment.yaml"
+        ]
+    }
+}
