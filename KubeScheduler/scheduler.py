@@ -12,7 +12,7 @@ import numpy
 from kubernetes import client, config, watch
 from prometheus_api_client import PrometheusConnect
 
-from kubernetes_helper import DeploymentContainer
+from kubernetes_helper import KubernetesDeployment
 
 
 def nodes_available():
@@ -92,13 +92,9 @@ class Test(object):
 def main():
     scheduler_name = "discc"
     w = watch.Watch()
-    deployment_path: str = './deployment_resources/draft_deployment.json'
-    dc = DeploymentContainer(deployment_path)
+    deployment_path: str = 'deployment_resources/draft_deployment.json'
+    dc = KubernetesDeployment(deployment_path)
     dc.start_deployment()
-
-    # command_dep_encod = KubernetesHelper.create_new_pod('./deployment_resources/encoding-deployment.yaml')
-    # command_dep_fram  = KubernetesHelper.create_new_pod('./deployment_resources/framing-deployment.yaml')
-    # command_dep_train = KubernetesHelper.create_new_pod('./deployment_resources/inference-deployment.yaml')
 
     for event in w.stream(v1.list_namespaced_pod, "default"):
         ###regex = "\s*'status':\s*'(True)',\s*'type': '(PodScheduled)'"
@@ -129,7 +125,6 @@ if __name__ == '__main__':
     #print(prom.custom_query(query="sum(abs(delta(download_durations_s_sum{}[1m]))< 50)by(source_node_name,dest_node_name)"))
 
     config.load_kube_config()
-    # config.load_incluster_config()
     v1 = client.CoreV1Api()
     
     main()
